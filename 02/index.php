@@ -1,6 +1,10 @@
 
 <?php
 
+// inline Comment
+
+<?php
+
 
 //3. Variables, Data Tyoes, Concatenation, Conditional Statements & Echo
 $firstName = "Harmanjeet"; // string
