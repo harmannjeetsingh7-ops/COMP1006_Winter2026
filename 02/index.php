@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php 
 //make PHP strict, needs to be at the start of your script 
 declare(strict_types=1); 
@@ -68,12 +69,47 @@ class Person {
 $person = new Person("Jessica", 40, true); 
 
 echo $person->getBadge(); 
+=======
+>>>>>>> 59a3f39c66312b187f47a025d4889901a7b43d43
+
+<?php
+
+<<<<<<< HEAD
+
+
+=======
+// inline Comment
+
+
+//3. Variables, Data Tyoes, Concatenation, Conditional Statements & Echo
+$firstName = "Harmanjeet"; // string
+$lastName = "Singh"; // string
+$age = 20; // int
+$isStudent = true; // boolean
+>>>>>>> 59a3f39c66312b187f47a025d4889901a7b43d43
+
+echo "<p>Hello there, my name is " . $firstName . " " . $lastName . "</p>";
+
+<<<<<<< HEAD
 
 
 
+=======
+if ($isStudent) {
+    echo "<p>I am a student and I am " . $age . " years old.</p>";
+} else {
+    echo "<p> opps I am not a student.</p>";
+}
+//4. Loosely Typed Language Demo
+$num1= 1;
+$num2= "10";
+
+function add(int $num1, int $num2) :int {
+    return $num1 + $num2;
+}
+echo "<p>" . add ($num1, $num2) ."</p>";
+//5. Strict Types & Types Hints
 
 
-
-
-
-
+//6. OOP with PHP 
+>>>>>>> 59a3f39c66312b187f47a025d4889901a7b43d43
