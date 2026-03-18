@@ -40,8 +40,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Price must be a valid number.";
     }
 
-    //Add Code Here 
-
+    // Handle optional image upload
+    if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        if ($_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            $detectedType = mime_content_type($_FILES['product_image']['tmp_name']);
+            
+            if (!in_array($detectedType, $allowedTypes, true)) {
+                $errors[] = "Only JPG, PNG, and WEBP images are allowed.";
+            } else {
+                $uploadDir = __DIR__ . '/uploads/';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
+                
+                $extension = strtolower(pathinfo($_FILES['product_image']['name'], PATHINFO_EXTENSION));
+                $safeFileName = uniqid('product_', true) . '.' . $extension;
+                $destination = $uploadDir . $safeFileName;
+                
+                if (move_uploaded_file($_FILES['product_image']['tmp_name'], $destination)) {
+                    $imagePath = 'uploads/' . $safeFileName;
+                } else {
+                    $errors[] = "Failed to save uploaded image.";
+                    $imagePath = null;
+                }
+            }
+        } else {
+            $errors[] = "Upload error: " . $_FILES['product_image']['error'];
+        }
+    }
     // If there are no errors, insert the product into the database
     if (empty($errors)) {
         $sql = "INSERT INTO products (name, description, price, image_path)

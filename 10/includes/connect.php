@@ -1,18 +1,17 @@
-<?php 
-$host = "localhost"; //hostname
-$db = "bitumi"; //database name
-$user = "root"; //username
-$password = ""; //password
+<?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-//points to the database
-$dsn = "mysql:host=$host;dbname=$db";
+$host = "localhost";
+$username = "Harmanjeet200651359";
+$password = "bRNXKXcQcu";
+$database = "Harmanjeet200651359";
 
-//try to connect, if connected echo a yay!
-try {
-   $pdo = new PDO ($dsn, $user, $password); 
-   $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+$conn = mysqli_connect($host, $username, $password, $database);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
-//what happens if there is an error connecting 
-catch(PDOException $e) {
-    die("Database connection failed: " . $e->getMessage()); 
-}
+
+echo "Connected successfully!";
+?>
