@@ -12,4 +12,5 @@ CREATE TABLE images (
     admin_id INT,
     title VARCHAR(255),
     image_path VARCHAR(255)
+    
 );

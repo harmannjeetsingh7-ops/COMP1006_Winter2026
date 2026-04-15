@@ -76,4 +76,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p><a href="login.php">Already have an account? Login</a></p>
 
 </body>
+
 </html>
