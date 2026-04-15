@@ -1,17 +1,12 @@
 <?php
-// UPDATE - Edit post
-
 include 'db.php';
 include 'includes/header.php';
 
 $id = $_GET['id'];
 
-$stmt = mysqli_prepare($conn, "SELECT * FROM posts WHERE id = ?");
-mysqli_stmt_bind_param($stmt, "i", $id);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-$post = mysqli_fetch_assoc($result);
-mysqli_stmt_close($stmt);
+$stmt = $conn->prepare("SELECT * FROM posts WHERE id = :id");
+$stmt->execute([':id' => $id]);
+$post = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -19,13 +14,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $category = trim($_POST['category']);
     $body = trim($_POST['body']);
 
-    $stmt = mysqli_prepare($conn,
-        "UPDATE posts SET title=?, category=?, body=? WHERE id=?"
+    $stmt = $conn->prepare(
+        "UPDATE posts SET title = :title, category = :category, body = :body WHERE id = :id"
     );
 
-    mysqli_stmt_bind_param($stmt, "sssi", $title, $category, $body, $id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
+    $stmt->execute([
+        ':title' => $title,
+        ':category' => $category,
+        ':body' => $body,
+        ':id' => $id
+    ]);
 
     echo "<div class='alert alert-success'>Post updated successfully!</div>";
 }

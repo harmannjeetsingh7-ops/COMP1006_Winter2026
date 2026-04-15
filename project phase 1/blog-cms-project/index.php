@@ -1,21 +1,17 @@
 <?php
-// READ - Display all posts
-
 include 'db.php';
 include 'includes/header.php';
 
-$result = mysqli_query($conn, "SELECT * FROM posts ORDER BY created_at DESC");
-
-if (!$result) {
-    die("SQL Error: " . mysqli_error($conn));
-}
+$stmt = $conn->prepare("SELECT * FROM posts ORDER BY created_at DESC");
+$stmt->execute();
+$posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <h2 class="mb-4">All Blog Posts</h2>
 
-<?php if (mysqli_num_rows($result) > 0): ?>
+<?php if (count($posts) > 0): ?>
 
-    <?php while ($row = mysqli_fetch_assoc($result)): ?>
+    <?php foreach ($posts as $row): ?>
 
         <div class="card mb-3">
             <div class="card-body">
@@ -32,7 +28,7 @@ if (!$result) {
             </div>
         </div>
 
-    <?php endwhile; ?>
+    <?php endforeach; ?>
 
 <?php else: ?>
     <div class="alert alert-info">No posts found.</div>

@@ -1,11 +1,9 @@
 <?php
-// CREATE - Add new post
-
 include 'db.php';
 include 'includes/header.php';
 
 $title = $category = $body = "";
-$date = date('Y-m-d'); // Default to today's date
+$date = date('Y-m-d');
 $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -15,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $body = trim($_POST['body']);
     $date = trim($_POST['date']);
 
-    // Server-side validation
     if (empty($title)) {
         $errors[] = "Title is required.";
     }
@@ -27,11 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($body)) {
         $errors[] = "Body is required.";
     }
+
     if (empty($date)) {
         $errors[] = "Date is required.";
     }
 
-    // Google reCAPTCHA verification
     $secretKey = "6LfSkHAsAAAAAIS5JuHQNTJTuaq6dnd73OiVc5JQ";
     $responseKey = $_POST['g-recaptcha-response'];
 
@@ -49,16 +46,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Please complete the reCAPTCHA.";
     }
 
-    // If no errors → Insert into DB
     if (empty($errors)) {
-
-        $stmt = mysqli_prepare($conn,
-            "INSERT INTO posts (title, category, body, created_at) VALUES (?, ?, ?, ?)"
+        $stmt = $conn->prepare(
+            "INSERT INTO posts (title, category, body, created_at) VALUES (:title, :category, :body, :created_at)"
         );
 
-        mysqli_stmt_bind_param($stmt, "ssss", $title, $category, $body, $date);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
+        $stmt->execute([
+            ':title' => $title,
+            ':category' => $category,
+            ':body' => $body,
+            ':created_at' => $date
+        ]);
 
         echo "<div class='alert alert-success'>Post added successfully!</div>";
 
